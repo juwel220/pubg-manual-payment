@@ -29,39 +29,38 @@
       background: green;
       color: white;
       border: none;
-      cursor: pointer;
     }
     .note {
-      margin-top: 15px;
       font-size: 14px;
+      margin-top: 15px;
     }
   </style>
 </head>
 <body>
 
-  <div class="box">
-    <h2>PUBG UC Order</h2>
+<div class="box">
+  <h2>PUBG UC Order</h2>
 
-    <input id="product" placeholder="UC Package (ex: 60 UC)" required>
-    <input id="price" placeholder="Price (৳)" required>
-    <input id="number" placeholder="Your Mobile Number" required>
-    <input id="trx" placeholder="Transaction ID" required>
+  <input id="product" placeholder="UC Package (ex: 60 UC)">
+  <input id="price" placeholder="Price (৳)">
+  <input id="number" placeholder="Your Mobile Number">
+  <input id="trx" placeholder="Transaction ID">
 
-    <button onclick="submitOrder()">Submit Order</button>
+  <button onclick="submitOrder()">Submit Order</button>
 
-    <div class="note">
-      👉 আগে আমাদের নাম্বারে টাকা পাঠান<br>
-      👉 তারপর Transaction ID দিন<br>
-      👉 UC 5–15 মিনিটে পাঠানো হবে
-    </div>
+  <div class="note">
+    👉 আগে আমাদের নাম্বারে টাকা পাঠান<br>
+    👉 তারপর Transaction ID দিন<br>
+    👉 UC 5–30 মিনিটে পাঠানো হবে
   </div>
+</div>
 
 <script>
 function submitOrder() {
-  const product = document.getElementById("product").value;
-  const price = document.getElementById("price").value;
-  const number = document.getElementById("number").value;
-  const trx = document.getElementById("trx").value;
+  const product = product.value;
+  const price = price.value;
+  const number = number.value;
+  const trx = trx.value;
 
   if (!product || !price || !number || !trx) {
     alert("সব ঘর পূরণ করুন");
@@ -70,29 +69,17 @@ function submitOrder() {
 
   fetch("/order", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      product,
-      price,
-      number,
-      trx
-    })
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ product, price, number, trx })
   })
   .then(res => res.json())
   .then(data => {
     if (data.success) {
-      alert("Order submitted successfully!");
+      alert("Order Submitted Successfully!");
       document.querySelectorAll("input").forEach(i => i.value = "");
-    } else {
-      alert("Something went wrong!");
     }
   })
-  .catch(err => {
-    alert("Server error!");
-    console.error(err);
-  });
+  .catch(() => alert("Server error"));
 }
 </script>
 
