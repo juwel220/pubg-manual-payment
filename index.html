@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>PUBG UC Manual Payment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 20px;
+    }
+    .box {
+      max-width: 400px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    h2 {
+      text-align: center;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    button {
+      background: green;
+      color: white;
+      border: none;
+      font-size: 16px;
+    }
+    .note {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555;
+    }
+    #msg {
+      margin-top: 10px;
+      text-align: center;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>PUBG UC Order</h2>
+
+  <input id="product" placeholder="UC Package (ex: 60 UC)" />
+  <input id="price" placeholder="Price (৳)" />
+  <input id="number" placeholder="Your Mobile Number" />
+  <input id="trx" placeholder="Transaction ID" />
+
+  <button onclick="sendOrder()">Submit Order</button>
+
+  <div id="msg"></div>
+
+  <div class="note">
+    👉 আগে আমাদের নাম্বারে টাকা পাঠান<br>
+    👉 তারপর Transaction ID দিন<br>
+    👉 UC 5–30 মিনিটে পাঠানো হবে
+  </div>
+</div>
+
+<script>
+  function sendOrder() {
+    fetch("/order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        product: document.getElementById("product").value,
+        price: document.getElementById("price").value,
+        number: document.getElementById("number").value,
+        trx: document.getElementById("trx").value
+      })
+    })
+    .then(res => res.json())
+    .then(() => {
+      document.getElementById("msg").innerText =
+        "✅ Order Submitted! Please wait for confirmation.";
+    })
+    .catch(() => {
+      document.getElementById("msg").innerText =
+        "❌ Error! Try again.";
+    });
+  }
+</script>
+
+</body>
+</html>
