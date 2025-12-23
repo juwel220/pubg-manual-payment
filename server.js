@@ -1,22 +1,16 @@
 const express = require("express");
-const app = express();
 const path = require("path");
 
+const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public")); // serve index.html
 
-app.use(express.static("public"));
-
+// POST route for order
 app.post("/order", (req, res) => {
   console.log("NEW ORDER:", req.body);
-
-  res.json({
-    success: true,
-    message: "Order received"
-  });
+  res.json({ success: true, message: "Order received" });
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log("Server running on port", PORT);
-});
+app.listen(PORT, () => console.log("Server running on port", PORT));
