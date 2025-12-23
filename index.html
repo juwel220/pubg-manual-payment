@@ -2,24 +2,73 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>CLIMAX UC SHOP</title>
+  <title>PUBG UC Order</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f2f2f2;
+    }
+    .box {
+      max-width: 400px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      font-size: 16px;
+    }
+    button {
+      background: green;
+      color: white;
+      border: none;
+    }
+    #msg {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
+<div class="box">
   <h2>PUBG UC Order</h2>
 
-  <form action="/order" method="POST">
-    <label>UC Package</label><br>
-    <input type="text" name="uc" required><br><br>
+  <input id="pkg" placeholder="UC Package (60 UC)">
+  <input id="price" placeholder="Price (৳)">
+  <input id="phone" placeholder="Mobile Number">
+  <input id="trx" placeholder="Transaction ID">
 
-    <label>Phone Number</label><br>
-    <input type="text" name="phone" required><br><br>
+  <button onclick="submitOrder()">Submit Order</button>
+  <div id="msg"></div>
+</div>
 
-    <label>Transaction ID</label><br>
-    <input type="text" name="trxid" required><br><br>
+<script>
+function submitOrder() {
+  const data = {
+    package: document.getElementById("pkg").value,
+    price: document.getElementById("price").value,
+    phone: document.getElementById("phone").value,
+    trxid: document.getElementById("trx").value
+  };
 
-    <button type="submit">Submit Order</button>
-  </form>
+  fetch("/order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(d => {
+    document.getElementById("msg").innerText = "✅ Order Submitted";
+  })
+  .catch(err => {
+    document.getElementById("msg").innerText = "❌ Error";
+  });
+}
+</script>
 
 </body>
 </html>
