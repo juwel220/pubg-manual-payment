@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>PUBG UC Manual Payment</title>
+  <title>PUBG UC Order</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #f2f2f2;
-      padding: 20px;
     }
     .box {
       max-width: 400px;
-      margin: auto;
+      margin: 40px auto;
       background: #fff;
       padding: 20px;
       border-radius: 8px;
@@ -22,72 +21,79 @@
     }
     input, button {
       width: 100%;
-      padding: 10px;
-      margin-top: 10px;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
     }
     button {
       background: green;
       color: white;
       border: none;
-      font-size: 16px;
+      cursor: pointer;
     }
     .note {
       margin-top: 15px;
       font-size: 14px;
-      color: #555;
-    }
-    #msg {
-      margin-top: 10px;
-      text-align: center;
-      color: green;
     }
   </style>
 </head>
 <body>
 
-<div class="box">
-  <h2>PUBG UC Order</h2>
+  <div class="box">
+    <h2>PUBG UC Order</h2>
 
-  <input id="product" placeholder="UC Package (ex: 60 UC)" />
-  <input id="price" placeholder="Price (৳)" />
-  <input id="number" placeholder="Your Mobile Number" />
-  <input id="trx" placeholder="Transaction ID" />
+    <input id="product" placeholder="UC Package (ex: 60 UC)" required>
+    <input id="price" placeholder="Price (৳)" required>
+    <input id="number" placeholder="Your Mobile Number" required>
+    <input id="trx" placeholder="Transaction ID" required>
 
-  <button onclick="sendOrder()">Submit Order</button>
+    <button onclick="submitOrder()">Submit Order</button>
 
-  <div id="msg"></div>
-
-  <div class="note">
-    👉 আগে আমাদের নাম্বারে টাকা পাঠান<br>
-    👉 তারপর Transaction ID দিন<br>
-    👉 UC 5–30 মিনিটে পাঠানো হবে
+    <div class="note">
+      👉 আগে আমাদের নাম্বারে টাকা পাঠান<br>
+      👉 তারপর Transaction ID দিন<br>
+      👉 UC 5–15 মিনিটে পাঠানো হবে
+    </div>
   </div>
-</div>
 
 <script>
-  function sendOrder() {
-    fetch("/order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        product: document.getElementById("product").value,
-        price: document.getElementById("price").value,
-        number: document.getElementById("number").value,
-        trx: document.getElementById("trx").value
-      })
-    })
-    .then(res => res.json())
-    .then(() => {
-      document.getElementById("msg").innerText =
-        "✅ Order Submitted! Please wait for confirmation.";
-    })
-    .catch(() => {
-      document.getElementById("msg").innerText =
-        "❌ Error! Try again.";
-    });
+function submitOrder() {
+  const product = document.getElementById("product").value;
+  const price = document.getElementById("price").value;
+  const number = document.getElementById("number").value;
+  const trx = document.getElementById("trx").value;
+
+  if (!product || !price || !number || !trx) {
+    alert("সব ঘর পূরণ করুন");
+    return;
   }
+
+  fetch("/order", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      product,
+      price,
+      number,
+      trx
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert("Order submitted successfully!");
+      document.querySelectorAll("input").forEach(i => i.value = "");
+    } else {
+      alert("Something went wrong!");
+    }
+  })
+  .catch(err => {
+    alert("Server error!");
+    console.error(err);
+  });
+}
 </script>
 
 </body>
