@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>PUBG UC Order</title>
+  <title>PUBG UC Manual Order</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -12,7 +12,7 @@
     .box {
       max-width: 400px;
       margin: 40px auto;
-      background: #fff;
+      background: #ffffff;
       padding: 20px;
       border-radius: 8px;
     }
@@ -29,6 +29,7 @@
       background: green;
       color: white;
       border: none;
+      cursor: pointer;
     }
     .note {
       font-size: 14px;
@@ -57,10 +58,10 @@
 
 <script>
 function submitOrder() {
-  const product = product.value;
-  const price = price.value;
-  const number = number.value;
-  const trx = trx.value;
+  const product = document.getElementById("product").value;
+  const price = document.getElementById("price").value;
+  const number = document.getElementById("number").value;
+  const trx = document.getElementById("trx").value;
 
   if (!product || !price || !number || !trx) {
     alert("সব ঘর পূরণ করুন");
@@ -69,7 +70,9 @@ function submitOrder() {
 
   fetch("/order", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({ product, price, number, trx })
   })
   .then(res => res.json())
@@ -79,7 +82,9 @@ function submitOrder() {
       document.querySelectorAll("input").forEach(i => i.value = "");
     }
   })
-  .catch(() => alert("Server error"));
+  .catch(() => {
+    alert("Server error");
+  });
 }
 </script>
 
