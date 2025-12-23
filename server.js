@@ -1,32 +1,44 @@
 const express = require("express");
-const path = require("path");
-
+const nodemailer = require("nodemailer");
 const app = express();
 
-// middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
-// serve homepage
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
-
-// handle order
-app.post("/order", (req, res) => {
+app.post("/order", async (req, res) => {
   const { product, price, number, trx } = req.body;
 
-  console.log("NEW ORDER RECEIVED:");
-  console.log("Product:", product);
-  console.log("Price:", price);
-  console.log("Mobile:", number);
-  console.log("Transaction ID:", trx);
+  if (!product || !price || !number || !trx) {
+    return res.json({ success: false });
+  }
 
-  res.json({ success: true });
+  try {
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER,
+      subject: "New UC Order",
+      text: `
+Product: ${product}
+Price: ${price}
+Number: ${number}
+Transaction ID: ${trx}
+      `
+    });
+
+    res.json({ success: true });
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false });
+  }
 });
 
-// start server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log("Server running on port", PORT);
-});
+app.listen(PORT, () => console.log("Server running"));
