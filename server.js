@@ -1,28 +1,22 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-
 const app = express();
-const PORT = process.env.PORT || 3000;
+const path = require("path");
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Homepage
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
-});
+app.use(express.static("public"));
 
-// Order receive
 app.post("/order", (req, res) => {
-  const { uc, phone, trxid } = req.body;
+  console.log("NEW ORDER:", req.body);
 
-  console.log("New Order:");
-  console.log("UC:", uc);
-  console.log("Phone:", phone);
-  console.log("TRXID:", trxid);
-
-  res.send("Order received! We will verify and send UC.");
+  res.json({
+    success: true,
+    message: "Order received"
+  });
 });
 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
