@@ -1,46 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>UC Shop</title>
+  <meta charset="UTF-8">
+  <title>CLIMAX UC SHOP</title>
 </head>
 <body>
 
-<h2>PUBG UC Order</h2>
+  <h2>PUBG UC Order</h2>
 
-<input id="product" placeholder="60 UC"><br><br>
-<input id="price" placeholder="120"><br><br>
-<input id="number" placeholder="Bkash/Nagad Number"><br><br>
-<input id="trx" placeholder="Transaction ID"><br><br>
+  <form action="/order" method="POST">
+    <label>UC Package</label><br>
+    <input type="text" name="uc" required><br><br>
 
-<button onclick="submitOrder()">Submit Order</button>
+    <label>Phone Number</label><br>
+    <input type="text" name="phone" required><br><br>
 
-<script>
-function submitOrder() {
-  const product = document.getElementById("product").value;
-  const price = document.getElementById("price").value;
-  const number = document.getElementById("number").value;
-  const trx = document.getElementById("trx").value;
+    <label>Transaction ID</label><br>
+    <input type="text" name="trxid" required><br><br>
 
-  if (!product || !price || !number || !trx) {
-    alert("সব ঘর পূরণ করুন");
-    return;
-  }
-
-  fetch("/order", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ product, price, number, trx })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      alert("Order Submitted!");
-    } else {
-      alert("Error!");
-    }
-  });
-}
-</script>
+    <button type="submit">Submit Order</button>
+  </form>
 
 </body>
 </html>
