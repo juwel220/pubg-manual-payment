@@ -3,35 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <title>PUBG UC Order</title>
+<style>
+body{font-family:Arial;background:#f2f2f2;}
+.box{max-width:400px;margin:50px auto;background:#fff;padding:20px;border-radius:8px;}
+input,button{width:100%;padding:10px;margin:8px 0;font-size:16px;}
+button{background:green;color:white;border:none;}
+#msg{margin-top:10px;font-weight:bold;}
+</style>
 </head>
 <body>
+<div class="box">
 <h2>PUBG UC Order</h2>
-
 <input id="pkg" placeholder="UC Package">
 <input id="price" placeholder="Price (৳)">
 <input id="phone" placeholder="Mobile Number">
 <input id="trx" placeholder="Transaction ID">
 <button onclick="submitOrder()">Submit Order</button>
-
 <div id="msg"></div>
-
+</div>
 <script>
-function submitOrder() {
-  const data = {
-    package: document.getElementById("pkg").value,
-    price: document.getElementById("price").value,
-    phone: document.getElementById("phone").value,
-    trxid: document.getElementById("trx").value
+function submitOrder(){
+  const data={
+    package:document.getElementById("pkg").value,
+    price:document.getElementById("price").value,
+    phone:document.getElementById("phone").value,
+    trxid:document.getElementById("trx").value
   };
-
-  fetch("/order", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  })
-  .then(res => res.json())
-  .then(d => document.getElementById("msg").innerText = "✅ Order Submitted")
-  .catch(err => document.getElementById("msg").innerText = "❌ Error! Try again");
+  fetch("/order",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)})
+  .then(res=>res.json())
+  .then(d=>document.getElementById("msg").innerText="✅ Order Submitted")
+  .catch(err=>document.getElementById("msg").innerText="❌ Error! Try again");
 }
 </script>
 </body>
