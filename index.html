@@ -1,60 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>PUBG UC Manual Order</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-    }
-    .box {
-      max-width: 400px;
-      margin: 40px auto;
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 8px;
-    }
-    h2 {
-      text-align: center;
-    }
-    input, button {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      font-size: 16px;
-    }
-    button {
-      background: green;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    .note {
-      font-size: 14px;
-      margin-top: 15px;
-    }
-  </style>
+  <title>UC Shop</title>
 </head>
 <body>
 
-<div class="box">
-  <h2>PUBG UC Order</h2>
+<h2>PUBG UC Order</h2>
 
-  <input id="product" placeholder="UC Package (ex: 60 UC)">
-  <input id="price" placeholder="Price (৳)">
-  <input id="number" placeholder="Your Mobile Number">
-  <input id="trx" placeholder="Transaction ID">
+<input id="product" placeholder="60 UC"><br><br>
+<input id="price" placeholder="120"><br><br>
+<input id="number" placeholder="Bkash/Nagad Number"><br><br>
+<input id="trx" placeholder="Transaction ID"><br><br>
 
-  <button onclick="submitOrder()">Submit Order</button>
-
-  <div class="note">
-    👉 আগে আমাদের নাম্বারে টাকা পাঠান<br>
-    👉 তারপর Transaction ID দিন<br>
-    👉 UC 5–30 মিনিটে পাঠানো হবে
-  </div>
-</div>
+<button onclick="submitOrder()">Submit Order</button>
 
 <script>
 function submitOrder() {
@@ -70,20 +28,16 @@ function submitOrder() {
 
   fetch("/order", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ product, price, number, trx })
   })
   .then(res => res.json())
   .then(data => {
     if (data.success) {
-      alert("Order Submitted Successfully!");
-      document.querySelectorAll("input").forEach(i => i.value = "");
+      alert("Order Submitted!");
+    } else {
+      alert("Error!");
     }
-  })
-  .catch(() => {
-    alert("Server error");
   });
 }
 </script>
