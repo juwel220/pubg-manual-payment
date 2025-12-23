@@ -5,7 +5,7 @@ const nodemailer = require("nodemailer");
 
 const app = express();
 app.use(express.json());
-
+const path = require("path");
 mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("Database Connected"))
 .catch(err => console.log(err));
@@ -35,12 +35,14 @@ app.post("/order", async (req, res) => {
   });
 
   res.json({ success: true });
-});
 
 app.get("/", (req, res) => {
-  res.send("PUBG UC Manual Payment Site Running ✅");
+  res.sendFile(path.join(__dirname, "index.html"));
 });
+a}};
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Server running");
-});
+
+ap..listen(proces..en..POR ||  300,  ( =>  
+   consol..log("Server running";
+
+};
